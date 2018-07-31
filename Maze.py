@@ -22,7 +22,8 @@ class Maze(object):
 
 		while not self.listNodes.empty():
 			current = self.listNodes.get()
-
+			print("Passed by " + current)
+			
 			if current == self.graph.end:
 				print("Got to the end!!")
 				break
@@ -35,6 +36,4 @@ class Maze(object):
 					priority = newCost + self.heuristic(self.graph.end, next[1])
 					self.listNodes.put(next[1], priority)
 					self.cameFrom[next[1]] = current
-					print("Passed by " + current)
 					pixels[int(current[1]), int(current[0])] = (255, 0, 0, 255)
-

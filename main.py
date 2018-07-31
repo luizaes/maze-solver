@@ -3,12 +3,26 @@ from Maze import Maze
 from PIL import Image
 
 graph = Graph()
-image = Image.open('maze.png')
-pixels = image.load()
-print("Maze before:")
-image.show()
+width = 0
+height = 0
+image = 0
+pixels = 0
 
-width, height = image.size
+print("Do you want to: \n1 - generate the maze or \n2 - use an existing image?")
+input = raw_input()
+if input == '1':
+	print("Width:")
+	width = int(raw_input())
+	print("Height:")
+	height = int(raw_input())
+	image = Image.new('RGB', (height, width))
+elif input == '2':
+	image = Image.open('maze2.png')
+	pixels = image.load()
+	width, height = image.size
+
+#print("Maze before:")
+#image.show()
 
 # Adds all the nodes to our graph
 for x in xrange(0,height):
@@ -68,8 +82,6 @@ for x in xrange(0,height):
 							graph.edges[str(x)+str(y)].append([counter, str(x)+str(z)])
 							graph.edges[str(x)+str(z)].append([counter, str(x)+str(y)])
 							break
-				if str(x)+str(y) == '53':
-						print "to aqui"
 				counter = 0
 				for z in reversed(range(0,x)):
 					if pixels[y,z] == (0,0,0,255):
@@ -81,12 +93,20 @@ for x in xrange(0,height):
 							graph.edges[str(z)+str(y)].append([counter, str(x)+str(y)])
 							break
 			added = False
-					
+
+
 print(graph.edges)
+print(len(graph.edges))
 maze = Maze(graph)
 maze.aStar(pixels)
 
-#pix[x,y] = value
-image.save('maze.png')
+'''for x in xrange(0,height):
+	for y in xrange(0,width):
+		for z in xrange(y,width):
+			if pixels[z, x] == (255, 0, 0, 255):
+'''
+
+image.save('maze3.png')
+image = image.resize((width+200, height+150))
 print("Maze after:")
 image.show()
