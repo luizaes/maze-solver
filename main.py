@@ -17,7 +17,9 @@ if input == '1':
 	height = int(raw_input())
 	image = Image.new('RGB', (height, width))
 elif input == '2':
-	image = Image.open('maze2.png')
+	print("What's the name and extension of the image?")
+	name = raw_input()
+	image = Image.open(name)
 	pixels = image.load()
 	width, height = image.size
 
