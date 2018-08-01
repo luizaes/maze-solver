@@ -16,7 +16,9 @@ class Maze(object):
 
 	def heuristic(self, a, b):
 		# Euclidean distance between point a and b
-		return math.sqrt(pow(int(a[0]) - int(b[0]), 2) + pow(int(a[1]) - int(b[1]), 2))
+		st = a.split(' ')
+		st2 = b.split(' ')
+		return math.sqrt(pow(int(st[0]) - int(st2[0]), 2) + pow(int(st[1]) - int(st2[1]), 2))
 
 	def aStar(self, pixels):
 
@@ -25,9 +27,10 @@ class Maze(object):
 			print("Passed by " + current)
 			
 			if current == self.graph.end:
+				st = current.split(' ')
+				pixels[int(st[1]), int(st[0])] = (255, 0, 0, 255)
 				print("Got to the end!!")
 				break
-			#print(self.graph.neighbors(current))
 
 			for next in self.graph.neighbors(current):
 				newCost = self.costSoFar[current] + self.graph.cost(current, next[1])
@@ -36,4 +39,5 @@ class Maze(object):
 					priority = newCost + self.heuristic(self.graph.end, next[1])
 					self.listNodes.put(next[1], priority)
 					self.cameFrom[next[1]] = current
-					pixels[int(current[1]), int(current[0])] = (255, 0, 0, 255)
+					st = current.split(' ')
+					pixels[int(st[1]), int(st[0])] = (255, 0, 0, 255)
