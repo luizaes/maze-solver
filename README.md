@@ -20,6 +20,11 @@ The maze solver takes as input an image, where the image must be formed only of 
 The maze also must have only one entry at the top (first row of pixels) and one way out at the bottom (last row of pixels).
 After running the program, you can choose in the menu if you want to either automatically generate a maze (not yet implemented) or use an existing image.
 
+#### Input Example
+![Input image](mazeInputExampleResized.png)
+### Output Example
+![Output image](mazeOutputExampleResized.png)
+
 #### Dependencies
 [PIL](http://www.pythonware.com/products/pil/)
 
