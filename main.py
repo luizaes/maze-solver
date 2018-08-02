@@ -1,12 +1,36 @@
 from Graph import Graph
 from Maze import Maze
+from random import randint
 from PIL import Image
 
 graph = Graph()
+graphMaze = Graph()
 width = 0
 height = 0
 image = 0
 pixels = 0
+
+def growingTree():
+	cells = []
+	visited = []
+	found = False
+	start = '0 ' + str(randint(0, width-1))
+	cells.append(start)
+	visited.append(start)
+	st = start.split(' ')
+	pixels[int(st[1]), int(st[0])] = (255, 255, 255, 255)
+
+	while len(cells) != 0:
+		for x in graphMaze.edges[cells[0]]:
+			if x[1] not in visited:
+				found = True
+				visited.append(x[1])
+				st = x[1].split(' ')
+				pixels[int(st[1]), int(st[0])] = (255, 255, 255, 255)
+				cells.append(x[1])
+		if not found:
+			cells.pop(0)
+		found = False
 
 print("Do you want to: \n1 - generate the maze or \n2 - use an existing image?")
 input = raw_input()
@@ -16,6 +40,52 @@ if input == '1':
 	print("Height:")
 	height = int(raw_input())
 	image = Image.new('RGB', (height, width))
+	pixels = image.load()
+	for x in xrange(0,height):
+		for y in xrange(0,width):
+			graphMaze.edges[str(x)+ ' ' +str(y)] = []
+			graphMaze.numVertices = graphMaze.numVertices + 1
+	print(graphMaze.edges)
+	for x in xrange(0,height):
+		for y in xrange(0,width):
+			if x == 0 and y == 0:
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x+1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y+1)])
+			elif x == height-1 and y == 0:
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x-1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y+1)])
+			elif y == width-1 and x == height-1:
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x-1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y-1)])
+			elif y == width-1 and x == 0:
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x+1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y-1)])
+			elif x == 0:
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x+1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y-1)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y+1)])
+			elif y == width-1:
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x-1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x+1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y-1)])
+			elif x == height-1:
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x-1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y+1)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y-1)])
+			elif y == 0:
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x+1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x-1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y+1)])
+			else:
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x+1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y+1)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x-1)+ ' ' +str(y)])
+				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y-1)])
+	print(graphMaze.edges)
+	growingTree()
+	image.show()
+			
+
 elif input == '2':
 	print("What's the name and extension of the image?")
 	name = raw_input()

@@ -22,7 +22,7 @@ After running the program, you can choose in the menu if you want to either auto
 
 #### Input Example
 ![Input image](mazeInputExampleResized.png)
-### Output Example
+#### Output Example
 ![Output image](mazeOutputExampleResized.png)
 
 #### Dependencies
