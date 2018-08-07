@@ -10,24 +10,40 @@ height = 0
 image = 0
 pixels = 0
 
-def growingTree():
+def mazeGeneration():
 	cells = []
 	visited = []
 	found = False
-	start = '0 ' + str(randint(0, width-1))
-	cells.append(start)
+	x = randint(1, width-2)
+	start = '0 ' + str(x)
 	visited.append(start)
-	st = start.split(' ')
-	pixels[int(st[1]), int(st[0])] = (255, 255, 255, 255)
+	cells.append(start)
+	pixels[x, 0] = (255,255,255,255)
+	pixels[x, 1] = (255,255,255,255)
+
+	print str(x)+' 1'
 
 	while len(cells) != 0:
+		print graphMaze.edges[cells[0]]
 		for x in graphMaze.edges[cells[0]]:
-			if x[1] not in visited:
+			st = x[1].split(' ')
+			if x[1] not in visited and pixels[int(st[1]), int(st[0])] == (255,255,255,255):
 				found = True
 				visited.append(x[1])
-				st = x[1].split(' ')
-				pixels[int(st[1]), int(st[0])] = (255, 255, 255, 255)
 				cells.append(x[1])
+				if int(st[0]) == height-1:
+					cells = []
+					break
+				y = randint(1,3)
+				if y == 1 and int(st[1]) > 1:
+					pixels[int(st[1])-1, int(st[0])] = (255, 255, 255, 255)
+				elif y == 2 and int(st[1]) < width-2:
+					pixels[int(st[1])+1, int(st[0])] = (255, 255, 255, 255)
+					pixels[int(st[1]), int(st[0])+1] = (255, 255, 255, 255)
+				elif int(st[1]) > 1 and int(st[1]) < width-2:
+					pixels[int(st[1]), int(st[0])+1] = (255, 255, 255, 255)
+					pixels[int(st[1])+1, int(st[0])] = (255, 255, 255, 255)
+					pixels[int(st[1])-1, int(st[0])] = (255, 255, 255, 255)
 		if not found:
 			cells.pop(0)
 		found = False
@@ -39,7 +55,7 @@ if input == '1':
 	width = int(raw_input())
 	print("Height:")
 	height = int(raw_input())
-	image = Image.new('RGB', (height, width))
+	image = Image.new('RGBA', (height, width), (0,0,0,255))
 	pixels = image.load()
 	for x in xrange(0,height):
 		for y in xrange(0,width):
@@ -82,9 +98,8 @@ if input == '1':
 				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x-1)+ ' ' +str(y)])
 				graphMaze.edges[str(x)+ ' ' +str(y)].append([1, str(x)+ ' ' +str(y-1)])
 	print(graphMaze.edges)
-	growingTree()
+	mazeGeneration()
 	image.show()
-			
 
 elif input == '2':
 	print("What's the name and extension of the image?")
